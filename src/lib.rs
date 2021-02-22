@@ -181,7 +181,7 @@ fn camera_movement_system(
 
 #[derive(Default)]
 struct State<'a> {
-	mouse_motion_event_reader: EventReader<&'a, MouseMotion>,
+	mouse_motion_event_reader: EventReader<'a, MouseMotion>,
 }
 
 fn mouse_motion_system(
