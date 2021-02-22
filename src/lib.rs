@@ -186,12 +186,11 @@ struct State {
 
 fn mouse_motion_system(
 	time: Res<Time>,
-	mut state: ResMut<State>,
-	mouse_motion_events: Res<Events<MouseMotion>>,
+	mut mouse_motion_events: EventReader<MouseMotion>,
 	mut query: Query<(&mut FlyCamera, &mut Transform)>,
 ) {
 	let mut delta: Vec2 = Vec2::zero();
-	for event in state.mouse_motion_event_reader.iter(&mouse_motion_events) {
+	for event in mouse_motion_events.iter() {
 		delta += event.delta;
 	}
 	if delta == Vec2::zero() {
