@@ -179,13 +179,19 @@ fn camera_movement_system(
 	}
 }
 
+#[derive(Default)]
+struct State {
+	mouse_motion_event_reader: EventReader<MouseMotion>,
+}
+
 fn mouse_motion_system(
 	time: Res<Time>,
-	mut mouse_motion_events: EventReader<MouseMotion>,
+	mut state: ResMut<State>,
+	mouse_motion_events: Res<Events<MouseMotion>>,
 	mut query: Query<(&mut FlyCamera, &mut Transform)>,
 ) {
 	let mut delta: Vec2 = Vec2::zero();
-	for event in mouse_motion_events.iter() {
+	for event in state.mouse_motion_event_reader.iter(&mouse_motion_events) {
 		delta += event.delta;
 	}
 	if delta == Vec2::zero() {
@@ -231,6 +237,7 @@ pub struct FlyCameraPlugin;
 impl Plugin for FlyCameraPlugin {
 	fn build(&self, app: &mut AppBuilder) {
 		app
+			.init_resource::<State>()
 			.add_system(camera_movement_system.system())
 			.add_system(mouse_motion_system.system());
 	}
