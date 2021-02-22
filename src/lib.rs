@@ -179,11 +179,6 @@ fn camera_movement_system(
 	}
 }
 
-#[derive(Default)]
-struct State {
-	mouse_motion_event_reader: EventReader<MouseMotion>,
-}
-
 fn mouse_motion_system(
 	time: Res<Time>,
 	mut mouse_motion_events: EventReader<MouseMotion>,
@@ -236,7 +231,6 @@ pub struct FlyCameraPlugin;
 impl Plugin for FlyCameraPlugin {
 	fn build(&self, app: &mut AppBuilder) {
 		app
-			.init_resource::<State>()
 			.add_system(camera_movement_system.system())
 			.add_system(mouse_motion_system.system());
 	}
